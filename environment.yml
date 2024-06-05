@@ -1,0 +1,19 @@
+name: cs231n-proj
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - numpy
+  - pandas
+  - scikit-image
+  - matplotlib
+  - pillow
+  - lpips
+  - colmap
+  - ffmpeg
+  - pip
+  - pip:
+      - torch
+      - torchvision
+      - tqdm
