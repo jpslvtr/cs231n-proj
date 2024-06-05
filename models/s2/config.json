@@ -1,0 +1,30 @@
+{
+    "learning_rate": 0.0001,
+    "batch_size": 8,
+    "epochs": 100,
+    "optimizer": "adam",
+    "loss_function": "mse",
+    "data_augmentation": {
+        "flip": true,
+        "rotation": true,
+        "scaling": true
+    },
+    "gaussian_parameters": {
+        "sigma": 1.0,
+        "num_components": 16
+    },
+    "training_resolution": [
+        512,
+        512
+    ],
+    "rendering_resolution": [
+        1024,
+        1024
+    ],
+    "regularization_weight": 0.1,
+    "scheduler": {
+        "type": "step",
+        "step_size": 10,
+        "gamma": 0.5
+    }
+}
