@@ -12,22 +12,20 @@ def run_command(command):
     rc = process.poll()
     return rc
 
-def train_gaussian(scene_num):
-    project_path = '/content/drive/My Drive/cs231n/project/'
-    frames_path = project_path + 'framesv4/'
-    output_base_path = project_path + 'output/'
-
-    scene_folder = f'scene{scene_num}'
-    unzip_dir = os.path.join(output_base_path, scene_folder, 'images')
-    output_model_dir = os.path.join(output_base_path, scene_folder, 'model')
-
+def train_gaussian(scene_num, iterations):
+    project_path = 'data/'
+    frames_path = os.path.join(project_path, 'processed', f'scene{scene_num}')
+    output_base_path = os.path.join(project_path, 'output', f'scene{scene_num}')
+    
+    unzip_dir = os.path.join(output_base_path, 'images')
+    output_model_dir = os.path.join(output_base_path, 'model')
+    
     os.makedirs(output_model_dir, exist_ok=True)
-
-    train_script_path = '/content/gaussian-splatting/train.py'
-    train_cmd = f"python {train_script_path} -s '{unzip_dir}' -o '{output_model_dir}'"
+    
+    train_script_path = 'src/train_gaussian.py'
+    train_cmd = f"python {train_script_path} --frames_path {frames_path} --output_path {output_model_dir} --iterations {iterations}"
     run_command(train_cmd)
 
 if __name__ == "__main__":
-    scenes = [0, 1, 2, 3, 4]
-    for scene in scenes:
-        train_gaussian(scene)
+    train_gaussian(1, iterations=15000)
+    train_gaussian(2, iterations=7000)

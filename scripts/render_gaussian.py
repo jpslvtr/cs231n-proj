@@ -12,23 +12,22 @@ def run_command(command):
     rc = process.poll()
     return rc
 
-def render_gaussian(scene_num, iteration=30000):
-    project_path = '/content/drive/My Drive/cs231n/project/'
-    output_base_path = project_path + 'output/'
-
-    scene_folder = f'scene{scene_num}'
-    output_model_dir = os.path.join(output_base_path, scene_folder, 'model')
-    output_video_path = os.path.join(output_base_path, f'scene{scene_num}_video.mp4')
-    images_dir = os.path.join(output_model_dir, 'images')
-
-    render_script_path = '/content/gaussian-splatting/render.py'
-    render_cmd = f"python {render_script_path} --model_path '{output_model_dir}' --iteration {iteration}"
+def render_gaussian(scene_num):
+    project_path = 'data/'
+    output_base_path = os.path.join(project_path, 'output', f'scene{scene_num}')
+    
+    model_path = os.path.join(output_base_path, 'model')
+    output_video_path = os.path.join(output_base_path, 'rendered_video.mp4')
+    images_dir = os.path.join(model_path, 'images')
+    
+    render_script_path = 'src/render_gaussian.py'
+    render_cmd = f"python {render_script_path} --model_path {model_path}"
     run_command(render_cmd)
-
-    ffmpeg_cmd = f"ffmpeg -y -framerate 3 -i '{images_dir}/%05d.png' -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' '{output_video_path}'"
+    
+    ffmpeg_cmd = f"ffmpeg -y -framerate 30 -i {images_dir}/%04d.png -c:v libx264 -pix_fmt yuv420p {output_video_path}"
     run_command(ffmpeg_cmd)
 
 if __name__ == "__main__":
-    scenes = [0, 1, 2, 3, 4]
+    scenes = [1, 2, 3, 4]
     for scene in scenes:
         render_gaussian(scene)
